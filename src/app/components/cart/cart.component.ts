@@ -1,7 +1,8 @@
-import { Component, inject, computed } from '@angular/core';
+import { Component, inject, computed, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CartService } from '../../services/cart.service';
+import { ApiService } from '../../services/api.service';
 
 @Component({
   selector: 'app-cart',
@@ -39,6 +40,18 @@ import { CartService } from '../../services/cart.service';
         <p class="cart-summary__label">Total</p>
         <p class="cart-summary__value">$ {{ total() | number:'1.0-0' }}</p>
       </div>
+
+      <button
+        *ngIf="cart().length > 0"
+        class="cart-pay"
+        type="button"
+        [disabled]="paying()"
+        (click)="payWithMercadoPago()"
+      >
+        {{ paying() ? 'Redirigiendo…' : 'Pagar con Mercado Pago' }}
+      </button>
+
+      <div *ngIf="payError()" class="cart-pay-error">{{ payError() }}</div>
 
       <form *ngIf="cart().length > 0" class="quote-form" (submit)="createQuote($event)">
         <label>
@@ -102,6 +115,7 @@ import { CartService } from '../../services/cart.service';
       background: #fbfaf8;
       color: #4b5563;
     }
+    s
 
     .cart-item {
       display: flex;
@@ -171,15 +185,47 @@ import { CartService } from '../../services/cart.service';
     .cart-clear:hover {
       background: #f3f4f6;
     }
+
+    .cart-pay {
+      width: 100%;
+      padding: 0.95rem 1rem;
+      border-radius: 0.75rem;
+      border: none;
+      background: #009ee3;
+      color: white;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .cart-pay:hover:not(:disabled) {
+      background: #0084c7;
+    }
+
+    .cart-pay:disabled {
+      opacity: 0.7;
+      cursor: default;
+    }
+
+    .cart-pay-error {
+      padding: 0.75rem 1rem;
+      border-radius: 0.75rem;
+      background: #fef2f2;
+      color: #b91c1c;
+      font-size: 0.9rem;
+    }
     `
   ]
 })
 export class CartComponent {
   cartService = inject(CartService);
+  private api = inject(ApiService);
   cart = this.cartService.cart;
   total = this.cartService.total;
   quoteEmail = '';
   quoteCode = '';
+  paying = signal(false);
+  payError = signal('');
 
   remove(id: number, wood: string) {
     this.cartService.removeItem(id, wood);
@@ -197,5 +243,33 @@ export class CartComponent {
     }
     this.quoteCode = `COT-${Math.floor(Math.random() * 90000) + 10000}`;
     this.cartService.clearCart();
+  }
+
+  payWithMercadoPago() {
+    if (this.cart().length === 0) {
+      return;
+    }
+    this.paying.set(true);
+    this.payError.set('');
+
+    const items = this.cart().map((item) => ({
+      title: `${item.name} (${item.wood})`,
+      quantity: item.qty,
+      unit_price: item.unitPrice,
+    }));
+
+    this.api.createPayment(items).subscribe({
+      next: (res) => {
+        // Redirige al checkout de Mercado Pago
+        window.location.href = res.url;
+      },
+      error: (err) => {
+        console.error('Error al iniciar el pago:', err);
+        this.paying.set(false);
+        this.payError.set(
+          'No se pudo iniciar el pago. Verifica que la API esté corriendo y el Access Token configurado.'
+        );
+      },
+    });
   }
 }

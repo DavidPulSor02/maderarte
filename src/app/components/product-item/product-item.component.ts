@@ -22,6 +22,7 @@ import { CartService } from '../../services/cart.service';
             <label for="wood-{{product.id}}">Madera</label>
             <select id="wood-{{product.id}}" [value]="selectedWood()" (change)="selectedWood.set($any($event.target).value)">
               <option *ngFor="let wood of woodTypes" [value]="wood">{{ wood }}</option>
+              
             </select>
           </div>
           <div class="inventory">Stock: {{ product.stock }} unidades</div>

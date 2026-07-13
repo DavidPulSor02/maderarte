@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-hero',
@@ -11,8 +12,8 @@ import { CommonModule } from '@angular/common';
         <h1>Arte en madera<br><span>para tu hogar</span></h1>
         <p>Presupuestos personalizados, precios variables según la madera y seguimiento completo de tu pedido.</p>
         <div style="display:flex;gap:12px;flex-wrap:wrap">
-          <button class="btn-primary" (click)="goToPage('quote')">Cotiza tu proyecto →</button>
-          <button class="btn-outline" (click)="goToPage('catalog')">Ver catálogo</button>
+          <button class="btn-primary" (click)="irATienda()">Cotiza tu proyecto →</button>
+          <button class="btn-outline" (click)="irATienda()">Ver catálogo</button>
         </div>
       </div>
     </div>
@@ -25,7 +26,7 @@ import { CommonModule } from '@angular/common';
       <div class="services-grid">
         <div class="service-card">
           <div class="service-img">
-            <img src="https://source.unsplash.com/800x600/?custom-furniture" alt="Diseño de muebles" class="service-img-custom" loading="lazy">
+            <img src="assets/dining-table.jpg" alt="Diseño de muebles" class="service-img-custom" loading="lazy">
             <span class="service-badge">Diseño</span>
           </div>
           <div class="service-body">
@@ -35,7 +36,7 @@ import { CommonModule } from '@angular/common';
         </div>
         <div class="service-card">
           <div class="service-img">
-            <img src="https://source.unsplash.com/800x600/?furniture-repair" alt="Reparación de muebles" class="service-img-custom" loading="lazy">
+            <img src="assets/cabinet.jpg" alt="Reparación de muebles" class="service-img-custom" loading="lazy">
             <span class="service-badge">Expertos</span>
           </div>
           <div class="service-body">
@@ -45,7 +46,7 @@ import { CommonModule } from '@angular/common';
         </div>
         <div class="service-card">
           <div class="service-img">
-            <img src="https://source.unsplash.com/800x600/?wood-planks" alt="Tipos de madera" class="service-img-custom" loading="lazy">
+            <img src="assets/shelf.jpg" alt="Tipos de madera" class="service-img-custom" loading="lazy">
             <span class="service-badge">Materiales</span>
           </div>
           <div class="service-body">
@@ -84,21 +85,11 @@ import { CommonModule } from '@angular/common';
   `
 })
 export class HeroComponent {
-  goToPage(page: string) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
-    
-    const pageEl = document.getElementById('page-' + page);
-    if (pageEl) {
-      pageEl.classList.add('active');
-    }
-    
-    const navEl = document.getElementById('nav-' + page);
-    if (navEl) {
-      navEl.classList.add('active');
-    }
-    
-    window.scrollTo(0, 0);
+  private router = inject(Router);
+
+  irATienda() {
+    // La tienda está protegida: si no hay sesión, el guard redirige a /login.
+    this.router.navigate(['/tienda']);
   }
 }
 

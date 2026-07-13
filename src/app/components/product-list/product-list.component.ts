@@ -1,6 +1,7 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProductService } from '../../services/product.service';
+import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'app-product-list',
@@ -64,6 +65,9 @@ import { ProductService } from '../../services/product.service';
       </div>
       <div class="products-panel">
         <p class="products-count">Mostrando <span>{{ filteredProducts().length }}</span> productos</p>
+        <div *ngIf="addedMsg()" style="margin:0 0 12px;padding:10px 14px;border-radius:10px;background:#e7f6ec;color:#1b6b3a;font-size:.9rem;font-weight:600">
+          ✓ {{ addedMsg() }}
+        </div>
         <div class="products-grid">
           <div class="product-card" *ngFor="let product of filteredProducts()">
             <div class="product-img">
@@ -97,8 +101,10 @@ import { ProductService } from '../../services/product.service';
 })
 export class ProductListComponent {
   private productService = inject(ProductService);
+  private cartService = inject(CartService);
   products = this.productService.products;
   priceMax = signal(50000);
+  addedMsg = signal('');
   
   filteredProducts = computed(() => {
     const woods = this.getSelectedWoods();
@@ -164,10 +170,12 @@ export class ProductListComponent {
   addToCart(id: number) {
     const p = this.products().find(x => x.id === id);
     if (!p) return;
-    
+
     const woodEl = document.getElementById('wood-' + id) as HTMLSelectElement;
     const wood = woodEl?.value || 'Roble';
-    
-    console.log('Added to cart:', p.name, wood);
+
+    this.cartService.addToCart(p, wood);
+    this.addedMsg.set(`${p.name} (${wood}) agregado a la cotización`);
+    setTimeout(() => this.addedMsg.set(''), 2500);
   }
 }

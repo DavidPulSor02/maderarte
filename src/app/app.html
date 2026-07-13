@@ -17,8 +17,8 @@
       </div>
       <div class="footer-col">
         <h4>Contacto</h4>
-        <p>📞 +52 55 1234 5678</p>
-        <p>✉️ info@maderarte.com</p>
+        <p>📞 +52 271 283 28 12</p>
+        <mailto href="20223L001057@utcv.edu.mx"> muebleszajo.com</mailto>
         <p>📍 Ciudad de México, México</p>
       </div>
       <div class="footer-col">
@@ -30,24 +30,24 @@
         <p>Domingo: Cerrado</p>
       </div>
     </div>
-    <div class="footer-bottom">© 2026 MaderArte. Todos los derechos reservados.</div>
+    <div class="footer-bottom">© 2026 Muebles zajo. Todos los derechos reservados.</div>
   </footer>
 </div>
 
 <!-- CATALOG PAGE -->
 <div class="page" id="page-catalog">
   <div class="page-header">
-    <h1>🏠 Nuestros productos</h1>
+    <h1>Nuestros productos</h1>
     <p>Encuentra el mueble perfecto para tu hogar</p>
   </div>
-  <div class="alert-bar">ℹ️ Los precios varían según la madera seleccionada. Pago solo en efectivo.</div>
+  <div class="alert-bar">ℹ Los precios varían según la madera seleccionada. Pago solo en efectivo.</div>
   <app-product-list></app-product-list>
 </div>
 
 <!-- QUOTE PAGE -->
 <div class="page" id="page-quote">
   <div class="page-header">
-    <h1>📋 Solicita tu presupuesto sin compromiso</h1>
+    <h1> Solicita tu presupuesto sin compromiso</h1>
     <p>Personaliza tu cotización y recibe una respuesta en menos de 24 horas</p>
   </div>
   <app-cart></app-cart>
@@ -83,3 +83,13 @@
     </div>
   </div>
 </div>
+
+<div class="modal-overlay" id="modal-overlay-repair">
+  <div class="modal">
+    <h3 id="modal-title-repair">Confirmar</h3>
+    <p id="modal-body-repair">¿Estás seguro?</p>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="this.closest('.modal-overlay').classList.remove('open')">Cancelar</button>
+      <button class="btn-confirm" id="modal-confirm-btn-repair">Confirmar</button>
+    </div>
+  </div>
