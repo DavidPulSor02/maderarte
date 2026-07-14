@@ -61,51 +61,71 @@ import { AuthService } from '../../services/auth.service';
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1rem 2rem;
-      background: #fff;
-      box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+      padding: 0.8rem 2rem;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
       position: sticky;
-      top: 0;
-      z-index: 20;
+      top: 1rem;
+      z-index: 50;
+      margin: 1rem auto;
+      max-width: 1200px;
+      border-radius: 100px;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      transition: all 0.3s ease;
     }
     .landing-brand {
       display: inline-flex;
       align-items: center;
-      gap: 0.5rem;
-      font-weight: 700;
-      color: #8b5a2b;
+      gap: 0.6rem;
+      font-weight: 800;
+      color: #2b1d12;
       text-decoration: none;
-      font-size: 1.1rem;
+      font-size: 1.25rem;
+      font-family: 'Playfair Display', serif;
     }
     .landing-brand__mark {
-      width: 32px; height: 32px;
+      width: 36px; height: 36px;
       border-radius: 50%;
-      background: #e07b39;
+      background: linear-gradient(135deg, #e07b39, #8b5a2b);
       color: #fff;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       font-weight: 700;
+      font-size: 1.1rem;
+      box-shadow: 0 2px 10px rgba(224, 123, 57, 0.3);
     }
     .landing-nav__links {
       display: flex;
       align-items: center;
-      gap: 1.25rem;
+      gap: 1.5rem;
     }
     .landing-nav__links a {
       color: #4b3a2b;
       text-decoration: none;
       font-weight: 600;
       font-size: 0.95rem;
+      transition: color 0.2s;
     }
-    .landing-nav__links a:hover { color: #8b5a2b; }
+    .landing-nav__links a:not(.landing-cta):hover {
+      color: #e07b39;
+    }
     .landing-cta {
-      background: #8b5a2b;
+      background: #2b1d12;
       color: #fff !important;
-      padding: 0.55rem 1rem;
-      border-radius: 0.7rem;
+      padding: 0.6rem 1.25rem;
+      border-radius: 100px;
+      transition: all 0.3s ease;
+      font-weight: 600;
+      box-shadow: 0 4px 15px rgba(43, 29, 18, 0.2);
     }
-    .landing-cta:hover { background: #6f4322; }
+    .landing-cta:hover { 
+      background: #e07b39; 
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(224, 123, 57, 0.3);
+    }
     `,
   ],
 })
