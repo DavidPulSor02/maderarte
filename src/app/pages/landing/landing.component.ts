@@ -27,7 +27,6 @@ import { AuthService } from '../../services/auth.service';
     </nav>
 
     <app-hero></app-hero>
-    <app-what-we-do></app-what-we-do>
 
     <footer>
       <div class="footer-grid">
