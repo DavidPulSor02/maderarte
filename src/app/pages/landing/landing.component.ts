@@ -12,7 +12,7 @@ import { AuthService } from '../../services/auth.service';
   template: `
     <nav class="landing-nav">
       <a routerLink="/" class="landing-brand">
-        <span class="landing-brand__mark">M</span> Maderarte
+        <span class="landing-brand__mark">Z</span> Muebles Zajo
       </a>
       <div class="landing-nav__links">
         <a routerLink="/tienda">Tienda</a>
@@ -32,15 +32,15 @@ import { AuthService } from '../../services/auth.service';
       <div class="footer-grid">
         <div class="footer-brand">
           <div style="display:flex;align-items:center;gap:10px;margin-bottom:.5rem">
-            <div style="width:36px;height:36px;border-radius:50%;background:var(--orange);overflow:hidden;display:flex;align-items:center;justify-content:center;color:white;font-weight:700">M</div>
-            <span style="color:var(--white);font-family:'Playfair Display',serif;font-size:18px;font-weight:700">Maderarte</span>
+            <div style="width:36px;height:36px;border-radius:50%;background:var(--orange);overflow:hidden;display:flex;align-items:center;justify-content:center;color:white;font-weight:700">Z</div>
+            <span style="color:var(--white);font-family:'Playfair Display',serif;font-size:18px;font-weight:700">Muebles Zajo</span>
           </div>
           <p>Transformamos madera en obras de arte para tu hogar</p>
         </div>
         <div class="footer-col">
           <h4>Contacto</h4>
           <p>📞 +52 55 1234 5678</p>
-          <p>✉️ info@maderarte.com</p>
+          <p>✉️ info@muebleszajo.com</p>
           <p>📍 Ciudad de México, México</p>
         </div>
         <div class="footer-col">
@@ -52,7 +52,7 @@ import { AuthService } from '../../services/auth.service';
           <p>Domingo: Cerrado</p>
         </div>
       </div>
-      <div class="footer-bottom">© 2026 MaderArte. Todos los derechos reservados.</div>
+      <div class="footer-bottom">© 2026 Muebles Zajo. Todos los derechos reservados.</div>
     </footer>
   `,
   styles: [

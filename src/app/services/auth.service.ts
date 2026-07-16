@@ -3,8 +3,8 @@ import { Observable, tap } from 'rxjs';
 import { ApiService } from './api.service';
 import { AuthUser, LoginInput, LoginResult, RegisterInput } from '../../lib/trpc';
 
-const TOKEN_KEY = 'maderarte_token';
-const USER_KEY = 'maderarte_user';
+const TOKEN_KEY = 'muebleszajo_token';
+const USER_KEY = 'muebleszajo_user';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {

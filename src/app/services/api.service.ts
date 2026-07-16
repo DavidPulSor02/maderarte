@@ -11,7 +11,18 @@ import {
   AuthUser,
   PaymentItem,
   PaymentPreference,
+  NotificationInput,
+  NotificationResult,
+  RepairRequestInput,
+  RepairRequestResult,
+  ProductInput,
 } from '../../lib/trpc';
+import { Product } from '../models/product';
+
+/** Serializa el input de una query tRPC como parámetro `?input=`. */
+function queryInput(input: unknown): string {
+  return `?input=${encodeURIComponent(JSON.stringify(input))}`;
+}
 
 /**
  * Servicio para consumir la API zajo-api.
@@ -57,6 +68,72 @@ export class ApiService {
       .post<TrpcResponse<PaymentPreference>>(
         `${API_URL}/payments.createPreference`,
         { items }
+      )
+      .pipe(map((r) => r.result.data));
+  }
+
+  /**
+   * notifications.sendMessage — envía un SMS o WhatsApp vía Twilio.
+   * Por defecto usa WhatsApp.
+   */
+  sendNotification(input: NotificationInput): Observable<NotificationResult> {
+    return this.http
+      .post<TrpcResponse<NotificationResult>>(
+        `${API_URL}/notifications.sendMessage`,
+        input
+      )
+      .pipe(map((r) => r.result.data));
+  }
+
+  /**
+   * notifications.sendRepairRequest — envía por WhatsApp al taller el
+   * resumen de una solicitud de reparación y devuelve el folio.
+   */
+  sendRepairRequest(input: RepairRequestInput): Observable<RepairRequestResult> {
+    return this.http
+      .post<TrpcResponse<RepairRequestResult>>(
+        `${API_URL}/notifications.sendRepairRequest`,
+        input
+      )
+      .pipe(map((r) => r.result.data));
+  }
+
+  // ---- Productos (CRUD) ----
+
+  /** products.getAll — catálogo completo. */
+  getProducts(): Observable<Product[]> {
+    return this.http
+      .get<TrpcResponse<Product[]>>(`${API_URL}/products.getAll`)
+      .pipe(map((r) => r.result.data));
+  }
+
+  /** products.getById — un producto por id. */
+  getProduct(id: number): Observable<Product> {
+    return this.http
+      .get<TrpcResponse<Product>>(`${API_URL}/products.getById${queryInput({ id })}`)
+      .pipe(map((r) => r.result.data));
+  }
+
+  /** products.create — crea un producto. */
+  createProduct(input: ProductInput): Observable<Product> {
+    return this.http
+      .post<TrpcResponse<Product>>(`${API_URL}/products.create`, input)
+      .pipe(map((r) => r.result.data));
+  }
+
+  /** products.update — actualiza un producto (campos parciales + id). */
+  updateProduct(id: number, input: Partial<ProductInput>): Observable<Product> {
+    return this.http
+      .post<TrpcResponse<Product>>(`${API_URL}/products.update`, { id, ...input })
+      .pipe(map((r) => r.result.data));
+  }
+
+  /** products.remove — elimina un producto. */
+  removeProduct(id: number): Observable<{ success: boolean; id: number }> {
+    return this.http
+      .post<TrpcResponse<{ success: boolean; id: number }>>(
+        `${API_URL}/products.remove`,
+        { id }
       )
       .pipe(map((r) => r.result.data));
   }

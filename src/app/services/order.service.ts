@@ -1,5 +1,4 @@
 import { Injectable, signal } from '@angular/core';
-import { CartItem } from './cart.service';
 
 export interface RepairTicket {
   folio: string;

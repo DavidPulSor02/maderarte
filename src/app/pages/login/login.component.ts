@@ -28,7 +28,7 @@ import { AUTH_STYLES } from '../auth-styles';
       <div class="auth-form-panel">
         <div class="auth-card">
           <a routerLink="/" class="auth-logo">
-            <span class="auth-logo__mark">M</span> Maderarte
+            <span class="auth-logo__mark">Z</span> Muebles Zajo
           </a>
 
           <h1>Bienvenido de vuelta</h1>
@@ -131,9 +131,15 @@ export class LoginComponent {
       next: () => this.router.navigate(['/tienda']),
       error: (err) => {
         this.loading.set(false);
-        this.error.set(
-          err?.error?.error?.message ?? 'Correo o contraseña incorrectos.'
-        );
+        if (err?.status === 0) {
+          this.error.set(
+            'No se pudo conectar con la API. Verifica que el backend esté corriendo en http://localhost:3000 (npm run dev).'
+          );
+        } else {
+          this.error.set(
+            err?.error?.error?.message ?? 'Correo o contraseña incorrectos.'
+          );
+        }
       },
     });
   }

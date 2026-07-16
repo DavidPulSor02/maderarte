@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   template: `
     <!-- ===== HERO ===== -->
     <div class="hero">
-      <img src="assets/hero-bg.jpg" alt="Taller de carpintería" class="hero-bg-img" />
+      <img src="https://images.unsplash.com/photo-1585128903994-9788298932a6?auto=format&fit=crop&w=1400&q=70" alt="Taller de carpintería" class="hero-bg-img" />
       <div class="hero-overlay"></div>
       <div class="hero-content">
         <div class="hero-badges">
@@ -172,7 +172,7 @@ import { Router } from '@angular/router';
           </div>
           <h3>Pago contra entrega</h3>
           <p>Paga únicamente cuando recibas tu mueble en casa. Sin anticipos, sin riesgos.</p>
-          <span class="feature-badge">Exclusivo Maderarte</span>
+          <span class="feature-badge">Exclusivo Muebles Zajo</span>
         </div>
         <div class="feature-card">
           <div class="feature-icon">

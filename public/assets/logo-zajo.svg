@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <!-- Globo -->
+  <circle cx="60" cy="60" r="30" fill="#2e8bd6"/>
+  <path d="M42 48c6 2 10-2 16 0s10 6 16 3c-2 8-8 12-14 13-3-4-8-3-11-7-2-3-6-3-7-8z" fill="#5bbf46"/>
+  <path d="M50 78c4-1 7 2 12 1 3 3 8 2 10 6-7 5-17 4-22-7z" fill="#5bbf46"/>
+  <!-- Flechas de reciclaje -->
+  <g fill="#5bbf46" stroke="#1f7a1f" stroke-width="2" stroke-linejoin="round">
+    <path d="M60 4 74 26 66 26 66 40 54 40 54 26 46 26z"/>
+    <path d="M112 84 86 96 90 88 78 82 84 72 96 78 100 70z"/>
+    <path d="M8 84 34 96 30 88 42 82 36 72 24 78 20 70z"/>
+  </g>
+</svg>

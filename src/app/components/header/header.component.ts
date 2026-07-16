@@ -9,8 +9,8 @@ import { CartService } from '../../services/cart.service';
   template: `
     <nav>
       <a class="nav-logo" href="#" (click)="showPage('home', $event)">
-        <div class="nav-logo-icon">M</div>
-        <span>Maderarte</span>
+        <div class="nav-logo-icon">Z</div>
+        <span>Muebles Zajo</span>
       </a>
       <div class="nav-links">
         <a href="#" (click)="showPage('home', $event)" id="nav-home" class="active">Inicio</a>

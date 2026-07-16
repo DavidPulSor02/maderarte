@@ -29,7 +29,7 @@ import { AUTH_STYLES } from '../auth-styles';
       <div class="auth-form-panel">
         <div class="auth-card">
           <a routerLink="/" class="auth-logo">
-            <span class="auth-logo__mark">M</span> Maderarte
+            <span class="auth-logo__mark">Z</span> Muebles Zajo
           </a>
 
           <h1>Crea tu cuenta</h1>

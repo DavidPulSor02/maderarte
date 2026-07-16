@@ -35,6 +35,7 @@ export interface AuthUser {
   id: number;
   email: string;
   verified: boolean;
+  role?: string; // "admin" | "client"
 }
 
 // Entrada de users.login
@@ -61,4 +62,51 @@ export interface PaymentItem {
 // Respuesta de payments.createPreference
 export interface PaymentPreference {
   url: string;
+}
+
+// --- Notificaciones (Twilio: SMS / WhatsApp) ---
+
+// Entrada de notifications.sendMessage
+export interface NotificationInput {
+  to: string;
+  body: string;
+  type: 'sms' | 'whatsapp';
+}
+
+// Respuesta de notifications.sendMessage
+export interface NotificationResult {
+  success: boolean;
+  message: string;
+  messageId: string;
+}
+
+// --- Solicitud de reparación ---
+
+export interface RepairRequestInput {
+  name: string;
+  email: string;
+  phone: string;
+  wood: string;
+  damageType: string;
+  description: string;
+  photosCount?: number;
+}
+
+export interface RepairRequestResult {
+  success: boolean;
+  folio: string;
+  messageId: string;
+}
+
+// --- Productos ---
+
+// Campos para crear/actualizar un producto (coincide con products.create del backend)
+export interface ProductInput {
+  name: string;
+  cat: string;
+  description?: string;
+  image?: string;
+  status?: 'available' | 'low' | 'bajo pedido';
+  stock?: number;
+  basePrice: Record<string, number>;
 }

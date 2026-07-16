@@ -1,7 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { OrderService } from '../../services/order.service';
+import { ApiService } from '../../services/api.service';
 
 @Component({
   selector: 'app-repair-request',
@@ -51,7 +52,9 @@ import { OrderService } from '../../services/order.service';
           <small>{{ files.length }} archivo(s) seleccionados</small>
         </label>
         <div class="repair-actions">
-          <button class="button button-primary" type="submit">Enviar solicitud</button>
+          <button class="button button-primary" type="submit" [disabled]="sending()">
+            {{ sending() ? 'Enviando…' : 'Enviar solicitud' }}
+          </button>
           <p class="repair-note">Estimado 300–800 MXN; precio final tras diagnóstico presencial.</p>
         </div>
       </form>
@@ -59,7 +62,10 @@ import { OrderService } from '../../services/order.service';
       <div *ngIf="ticketFolio" class="repair-success">
         <p>Solicitud registrada con folio <strong>{{ ticketFolio }}</strong>.</p>
         <p>Estado actual: <strong>Diagnóstico</strong>.</p>
+        <p *ngIf="whatsappSent()">📲 Enviamos los detalles por WhatsApp al taller.</p>
       </div>
+
+      <div *ngIf="sendError()" class="repair-error">{{ sendError() }}</div>
     </section>
   `,
   styles: [
@@ -117,11 +123,21 @@ import { OrderService } from '../../services/order.service';
       border: 1px solid #e5d6c2;
       color: #5b463e;
     }
+    .repair-error {
+      margin-top: 0.75rem;
+      padding: 0.85rem 1rem;
+      border-radius: 0.75rem;
+      background: #fdecea;
+      border: 1px solid #f5c2bd;
+      color: #b0332a;
+      font-size: 0.9rem;
+    }
     `
   ]
 })
 export class RepairRequestComponent {
   private orderService = inject(OrderService);
+  private api = inject(ApiService);
   woodTypes = ['Roble', 'Nogal', 'Pino', 'Caoba'];
   name = '';
   email = '';
@@ -131,6 +147,10 @@ export class RepairRequestComponent {
   description = '';
   files: File[] = [];
   ticketFolio = '';
+
+  sending = signal(false);
+  whatsappSent = signal(false);
+  sendError = signal('');
 
   updateFiles(event: Event) {
     const input = event.target as HTMLInputElement;
@@ -144,14 +164,46 @@ export class RepairRequestComponent {
     if (!this.name || !this.email || !this.phone || !this.description) {
       return;
     }
+
+    this.sendError.set('');
+    this.whatsappSent.set(false);
+    this.sending.set(true);
+
+    // Registro local para el seguimiento en "Órdenes".
     const ticket = this.orderService.createRepairTicket({
       name: this.name,
       email: this.email,
       phone: this.phone,
       wood: this.wood,
       damageType: this.damageType,
-      description: this.description
+      description: this.description,
     });
-    this.ticketFolio = ticket.folio;
+
+    // Envío del resumen por WhatsApp al taller (vía Twilio en el backend).
+    this.api
+      .sendRepairRequest({
+        name: this.name,
+        email: this.email,
+        phone: this.phone,
+        wood: this.wood,
+        damageType: this.damageType,
+        description: this.description,
+        photosCount: this.files.length,
+      })
+      .subscribe({
+        next: (res) => {
+          this.sending.set(false);
+          this.ticketFolio = res.folio; // usamos el folio del backend
+          this.whatsappSent.set(true);
+        },
+        error: (err) => {
+          console.error('Error enviando la solicitud por WhatsApp:', err);
+          this.sending.set(false);
+          this.ticketFolio = ticket.folio; // al menos queda el folio local
+          this.sendError.set(
+            'La solicitud se registró, pero no pudimos enviar el WhatsApp al taller. Verifica que la API esté corriendo y que el número esté unido al sandbox.'
+          );
+        },
+      });
   }
 }
